@@ -1,0 +1,30 @@
+{
+    "name": "yume/tinderclonefmu-backend",
+    "description": "API do backend do tinder do projeto de dev web",
+    "autoload": {
+        "psr-4": {
+            "Yume\\TinderclonefmuBackend\\": "src/",
+            "Controllers\\": "src/Controllers/",
+            "Helpers\\": "src/Helpers/",
+            "Models\\": "src/Models/",
+            "Core\\":"src/Core/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Yume Fernandes",
+            "email": "yumefernandes.dev@gmail.com"
+        }
+    ],
+    "require": {
+        "firebase/php-jwt": "^6.11"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "php -r \"file_exists('vendor/composer/platform_check.php') && unlink('vendor/composer/platform_check.php');\""
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}

@@ -1,0 +1,8 @@
+/vendor
+# .vercelignore
+node_modules/
+tests/
+docs/
+.git/
+README.md
+Dockerfile
