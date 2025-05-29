@@ -16,6 +16,8 @@ $router->post(path: '/api/send-verification-email', action: 'UserController@send
 $router->get(path: '/api/verify-email/{token}', action: 'UserController@verifyEmail');  // Verifica o código de email enviado para o usuário após o registro
 $router->post(path: '/api/resend-verification', action: 'UserController@resendVerification');  // Reenvia o código de verificação de email
 $router->get(path: '/api/account-status', action: 'UserController@accountStatus');  // Retorna o status da conta (ativa ou banida)
+$router->post(path: '/api/img-change/', action: 'UserController@updateProfilePicture');  // Altera a imagem do usuario
+
 
 // Rotas de curtidas e matches
 $router->post(path: '/api/like', action: 'LikeController@likeUser');  // Curtir usuário

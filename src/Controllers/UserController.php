@@ -226,4 +226,73 @@ class UserController {
 
         echo json_encode(['status' => $user['status']]);
     }
+
+    //nova função de atualizr a imagem
+    
+    public function updateProfilePicture()
+{
+    session_start();
+
+    /*
+
+    if (!isset($_SESSION['user_id'])) {
+        http_response_code(401);
+        echo json_encode(['error' => 'Usuário não autenticado.']);
+        return;
+    }
+
+    $userId = $_SESSION['user_id'];
+
+    */
+
+    $userId = 11;
+
+    if (!isset($_FILES['profile_picture'])) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Nenhuma imagem enviada.']);
+        return;
+    }
+
+    $file = $_FILES['profile_picture'];
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+    if (!in_array($file['type'], $allowedTypes)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Tipo de imagem não permitido.']);
+        return;
+    }
+
+    if ($file['size'] > 5 * 1024 * 1024) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Imagem muito grande.']);
+        return;
+    }
+
+    $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $newFileName = uniqid('profile_', true) . '.' . $ext;
+    $uploadDir = __DIR__ . '/../photos/';
+    $uploadPath = $uploadDir . $newFileName;
+
+    if (!move_uploaded_file($file['tmp_name'], $uploadPath)) {
+        http_response_code(500);
+        echo json_encode(['error' => 'Erro ao salvar a imagem.']);
+        return;
+    }
+
+    // Salva o caminho relativo (ex: "photos/profile_123.jpg")
+    $relativePath = 'photos/' . $newFileName;
+
+    // Atualiza no banco (assumindo que você tem um UserModel com updateProfilePicture)
+    require_once __DIR__ . '/../models/User.php';
+    $pdo = new \PDO('postgresql://tinder-clone_owner:npg_Llv0AVC9SwFW@ep-shy-wind-ac11yuxh-pooler.sa-east-1.aws.neon.tech/tinder-clone?sslmode=require', 'tinder-clone_owner', 'npg_Llv0AVC9SwFW');
+    $user = new User($pdo);
+
+    if ($user->updateProfilePicture($userId, $relativePath)) {
+        echo json_encode(['success' => true, 'path' => $relativePath]);
+    } else {
+        http_response_code(500);
+        echo json_encode(['error' => 'Erro ao atualizar no banco de dados.']);
+    }
+}
+
 }

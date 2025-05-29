@@ -131,4 +131,13 @@ class User {
         ];
         return \Firebase\JWT\JWT::encode($payload, $key);
     }
+
+    //função para atualizar a imagem 
+    public function updateProfilePicture($userId, $path)
+{
+    $db = Database::connect();
+    $stmt = $db->prepare("UPDATE users SET profile_picture = ? WHERE id = ?");
+    return $stmt->execute([$path, $userId]);
+}
+
 }
