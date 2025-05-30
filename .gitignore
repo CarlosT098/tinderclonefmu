@@ -19,7 +19,7 @@ $RECYCLE.BIN/
 **/.env*
 
 /docs
-
+**/photos
 # Windows Installer files
 *.cab
 *.msi

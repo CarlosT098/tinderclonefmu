@@ -133,11 +133,38 @@ class User {
     }
 
     //função para atualizar a imagem 
-    public function updateProfilePicture($userId, $path)
+public static function updateProfilePicture($userId, $path)
 {
     $db = Database::connect();
-    $stmt = $db->prepare("UPDATE users SET profile_picture = ? WHERE id = ?");
-    return $stmt->execute([$path, $userId]);
+
+    try {
+        $db->beginTransaction();
+
+        // 1️⃣ Desmarcar todas as fotos principais
+        $stmt1 = $db->prepare("UPDATE fotos SET is_main_photo = FALSE WHERE usuario_id = ?");
+        if (!$stmt1->execute([$userId])) {
+            throw new \Exception("Erro ao desmarcar fotos antigas.");
+        }
+
+        // 2️⃣ Inserir a nova foto como principal
+        $stmt2 = $db->prepare("INSERT INTO fotos (usuario_id, caminho, is_main_photo) VALUES (?, ?, TRUE) RETURNING id");
+        if (!$stmt2->execute([$userId, $path])) {
+            throw new \Exception("Erro ao inserir nova foto.");
+        }
+
+        $newPhotoId = $stmt2->fetchColumn();
+
+        $db->commit();
+
+        return $newPhotoId;
+    } catch (\Exception $e) {
+        if ($db->inTransaction()) {
+            $db->rollBack();
+        }
+        throw new \Exception("Erro ao atualizar foto de perfil: " . $e->getMessage());
+    }
 }
+
+
 
 }
