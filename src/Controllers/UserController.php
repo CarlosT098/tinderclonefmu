@@ -283,11 +283,10 @@ class UserController {
     $relativePath = 'photos/' . $newFileName;
 
     // Atualiza no banco (assumindo que você tem um UserModel com updateProfilePicture)
-    require_once __DIR__ . '/../models/User.php';
-    $pdo = new \PDO('postgresql://tinder-clone_owner:npg_Llv0AVC9SwFW@ep-shy-wind-ac11yuxh-pooler.sa-east-1.aws.neon.tech/tinder-clone?sslmode=require', 'tinder-clone_owner', 'npg_Llv0AVC9SwFW');
-    $user = new User($pdo);
-
-    if ($user->updateProfilePicture($userId, $relativePath)) {
+    //require_once __DIR__ . '/../Models/User.php';
+    //$pdo = new \PDO('postgresql://tinder-clone_owner:npg_Llv0AVC9SwFW@ep-shy-wind-ac11yuxh-pooler.sa-east-1.aws.neon.tech/tinder-clone?sslmode=require', 'tinder-clone_owner', 'npg_Llv0AVC9SwFW');
+    //$user = new User($pdo);
+    if (User::updateProfilePicture($userId, $relativePath)) {
         echo json_encode(['success' => true, 'path' => $relativePath]);
     } else {
         http_response_code(500);
